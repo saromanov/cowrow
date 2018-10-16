@@ -18,7 +18,7 @@ func LoadYAMLFile(envPath, name string, cfg interface{}) error {
 	if path == "" {
 		return errPathNotFound
 	}
-	fileConfig, err := ioutil.ReadFile(fmt.Sprintf("%s/%s", path, name))
+	fileConfig, err := ioutil.ReadFile(fmt.Sprintf("%s/%s.yaml", path, name))
 	if err != nil {
 		return err
 	}
