@@ -22,7 +22,7 @@ func LoadYAMLFile(envPath, name string, cfg interface{}) error {
 	if err != nil {
 		return err
 	}
-	err = yaml.Unmarshal(fileConfig, &cfg)
+	err = yaml.Unmarshal(fileConfig, cfg)
 	if err != nil {
 		return err
 	}
