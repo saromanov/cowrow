@@ -18,13 +18,23 @@ func LoadYAMLFile(envPath, name string, cfg interface{}) error {
 	if path == "" {
 		return errPathNotFound
 	}
+
+	return load(path, name, cfg)
+}
+
+// LoadYAMLByPath provides loading of the config by the path
+func LoadYAMLByPath(path, name string, cfg interface{}) error {
+	return load(path, name, cfg)
+}
+
+func load(path, name string, cfg interface{}) error {
 	fileConfig, err := ioutil.ReadFile(fmt.Sprintf("%s/%s.yaml", path, name))
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to load file: %v", err)
 	}
 	err = yaml.Unmarshal(fileConfig, cfg)
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to unmarshal data: %v", err)
 	}
 
 	return nil
