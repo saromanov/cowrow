@@ -11,9 +11,9 @@ import (
 
 var errPathNotFound = errors.New("path is not found")
 
-// LoadYAMLFile provides loading of the yaml file
+// LoadByEnv provides loading of the yaml file
 // by the name from path
-func LoadYAMLFile(envPath, name string, cfg interface{}) error {
+func LoadByEnv(envPath, name string, cfg interface{}) error {
 	path := os.Getenv(envPath)
 	if path == "" {
 		return errPathNotFound
@@ -21,11 +21,12 @@ func LoadYAMLFile(envPath, name string, cfg interface{}) error {
 	return load(fmt.Sprintf("%s/%s.yaml", path, name), cfg)
 }
 
-// LoadYAMLByPath provides loading of the config by the path
-func LoadYAMLByPath(path string, cfg interface{}) error {
+// LoadByPath provides loading of the config by the path
+func LoadByPath(path string, cfg interface{}) error {
 	return load(path, cfg)
 }
 
+// load provides loading of the config
 func load(name string, cfg interface{}) error {
 	fileConfig, err := ioutil.ReadFile(name)
 	if err != nil {
