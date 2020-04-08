@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
+	"path"
 
 	"gopkg.in/yaml.v2"
 )
@@ -28,7 +30,7 @@ func LoadByPath(path string, cfg interface{}) error {
 
 // load provides loading of the config
 func load(name string, cfg interface{}) error {
-	fileConfig, err := ioutil.ReadFile(name)
+	fileConfig, err := loadFile(name)
 	if err != nil {
 		return fmt.Errorf("unable to load file: %v", err)
 	}
@@ -38,4 +40,27 @@ func load(name string, cfg interface{}) error {
 	}
 
 	return nil
+}
+
+// loadFile provides loading of file
+// its trying to load by .yaml or .yml extension
+func loadFile(name string) ([]byte, error) {
+	if !strings.Contains(name, ".") {
+		name = fmt.Sprintf(name, ".yml")
+	}
+	fileConfig, err := ioutil.ReadFile(name)
+	if err != nil {
+		fname := strings.TrimSuffix(name, path.Ext(name))
+		if strings.Contains(name, ".yaml") {
+			fname = fname + ".yml"
+		}
+		if strings.Contains(name, ".yml") {
+			fname = fname + ".yaml"
+		} 
+		fileConfig, err = ioutil.ReadFile(fname)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("unable to load file: %v", err)
+	}
+	return fileConfig, nil
 }
