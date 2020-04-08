@@ -1,4 +1,6 @@
 # cowrow
+[![Go Report Card](https://goreportcard.com/badge/github.com/saromanov/cowrow)](https://goreportcard.com/report/github.com/saromanov/cowrow)
+
 Simple tool for loading of the yaml files from the directory
 
 ### Loading of config by the env variable
@@ -34,3 +36,6 @@ func LoadYAMLByName(name string) (*Config, error) {
 	return cfg, nil
 }
 ```
+
+LICENSE
+MIT
