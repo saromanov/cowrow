@@ -2,33 +2,14 @@ package cowrow
 
 import (
 	"os"
-	"path/filepath"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
-
-var rootTestDir = "./tmp"
-
-func removeContentFromRoot(dir string) error {
-	d, err := os.Open(dir)
-	if err != nil {
-		return err
-	}
-	defer d.Close()
-	names, err := d.Readdirnames(-1)
-	if err != nil {
-		return err
-	}
-	for _, name := range names {
-		err = os.RemoveAll(filepath.Join(dir, name))
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 type testStruct struct {
 	Foo  string          `yaml:"foo"`
+	Num  int             `yaml:"num"`
 	Data []testStructEmb `yaml:"data"`
 }
 type testStructEmb struct {
@@ -37,5 +18,8 @@ type testStructEmb struct {
 
 func TestLoadByEnv(t *testing.T) {
 	os.Setenv("COWROW_TEST", "./fixtures")
-	LoadByEnv("COWROW_TEST", "test.yaml")
+	var r testStruct
+	assert.NoError(t, LoadByEnv("COWROW_TEST", "test", &r))
+	assert.Equal(t, "bar", r.Foo)
+	assert.Equal(t, 42, r.Num)
 }

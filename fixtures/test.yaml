@@ -1,3 +1,4 @@
 foo: bar
+num: 42
 data:
   - name: abc
