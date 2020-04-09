@@ -18,6 +18,9 @@ jobs:
       with:
         go-version: 1.13
       id: go
+    
+    env:
+      COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
@@ -30,11 +33,8 @@ jobs:
             dep ensure
         fi
 
-    - name: Build
-      run: go build -v .
-    
-    - name: Test
-      run: go test .
+    - name: Test and coverge
+      run: go test -race -covermode atomic -coverprofile=profile.cov ./...
       
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v1.0.1
