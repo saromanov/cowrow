@@ -30,12 +30,12 @@ jobs:
             dep ensure
         fi
 
-    - name: Test and coverge
+    - name: Run Unit tests
+      run: |
+        go test -race -covermode atomic -coverprofile=profile.cov ./...
+    - name: Send coverage
       env:
         COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: go test -race -covermode atomic -coverprofile=profile.cov ./...
-      
-    - uses: actions/checkout@v2
-    - uses: shogo82148/actions-goveralls@v1
-      with:
-        path-to-profile: profile.cov
+      run: |
+        GO111MODULE=off go get github.com/mattn/goveralls
+        $(go env GOPATH)/bin/goveralls -coverprofile=profile.cov -service=github
