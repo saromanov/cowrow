@@ -22,6 +22,10 @@ func TestLoadByEnv(t *testing.T) {
 	assert.NoError(t, LoadByEnv("COWROW_TEST", "test", &r))
 	assert.Equal(t, "bar", r.Foo)
 	assert.Equal(t, 42, r.Num)
+
+	assert.Error(t, LoadByEnv("COWROW_TEST_NOT_FOUND", "test", &r))
+	assert.Error(t, LoadByEnv("COWROW_TEST", "test2", &r))
+	assert.Error(t, LoadByEnv("COWROW_TEST", "test_failed", &r))
 }
 
 func TestLoadByPath(t *testing.T) {
@@ -37,4 +41,5 @@ func TestLoadByPath(t *testing.T) {
 	assert.NoError(t, LoadByPath("./fixtures/test.yml", &r3))
 	assert.Equal(t, "bar", r3.Foo)
 	assert.Equal(t, 42, r3.Num)
+	assert.Error(t, LoadByPath("./fixtures/test22.yml", &r3))
 }
